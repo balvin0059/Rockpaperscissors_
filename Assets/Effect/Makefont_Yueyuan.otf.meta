@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: dad87e8d653af354f9db707963e0a899
+timeCreated: 1533079108
+licenseType: Pro
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: RTWS YueRoundedGothic G0v1
+  fontNames:
+  - RTWS YueRoundedGothic G0v1
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
