@@ -17,11 +17,12 @@ public class StartMenu : MonoBehaviour {
 		
 	}
     public void OnStart()
-    {
+    {        
         SceneManager.LoadScene(1);
     }
     public void OnQuit()
     {
+        PlayerPrefs.SetInt("Eggvalue", EggSystem.instance.egg.eggSpawnValue);
         Application.Quit();
     }
     public void OnInfo()
