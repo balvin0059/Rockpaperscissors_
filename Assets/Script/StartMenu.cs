@@ -7,8 +7,12 @@ using UnityEngine.UI;
 public class StartMenu : MonoBehaviour {
     public Image info;
     public bool OpenInfo = false;
-	// Use this for initialization
-	void Start () {
+    private void Awake()
+    {
+
+    }
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -21,8 +25,7 @@ public class StartMenu : MonoBehaviour {
         SceneManager.LoadScene(1);
     }
     public void OnQuit()
-    {
-        PlayerPrefs.SetInt("Eggvalue", EggSystem.instance.egg.eggSpawnValue);
+    {        
         Application.Quit();
     }
     public void OnInfo()

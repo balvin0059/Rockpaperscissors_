@@ -49,6 +49,8 @@ public class GameCore : MonoBehaviour
         public int win;
         public int lose;
         public Image eggbar;
+        public Image continue_eggnotb;
+        public Image continue_eggb;
     }
     [Serializable]
     public struct Enemystuff
@@ -79,7 +81,9 @@ public class GameCore : MonoBehaviour
     #endregion
 
     private float turnTime = 3.0f;
+    private float waitButton = 1.0f;
     private bool turnStart = false;
+    private bool waitCd = false;
     private bool gameOveryet = false;
     private float damage;
 
@@ -104,6 +108,7 @@ public class GameCore : MonoBehaviour
     void Update()
     {
         if (turnStart) { Timeline(); }
+        if (waitCd) { ButtonDelay(); }
         enemy.hpBar.fillAmount = enemy.hp / 100;
         player.hpBar.fillAmount = player.hp / 100;
         myUI.eggbar.fillAmount = (float)EggSystem.instance.egg.eggSpawnValue / (float)EggSystem.instance.egg.eggSpawnMaxValue;
@@ -116,60 +121,8 @@ public class GameCore : MonoBehaviour
             Gameover(1);
         }
     }
-    #region 點擊按鈕
-    public void OnClickRock()
-    {
-        if (!gameOveryet)
-        {
-            if (!turnStart)
-            {
-                hand = Hand.Rock;
-                EnemyAiHand();
-                TurnBattle();
-                turnStart = true;
-            }
-        }
-    }
-    public void OnClickPaper()
-    {
-        if (!gameOveryet)
-        {
-            if (!turnStart)
-            {
-                hand = Hand.Paper;
-                EnemyAiHand();
-                TurnBattle();
-                turnStart = true;
-            }
-        }
-    }
-    public void OnClickScissors()
-    {
-        if (!gameOveryet)
-        {
-            if (!turnStart)
-            {
-                hand = Hand.Scissors;
-                EnemyAiHand();
-                TurnBattle();
-                turnStart = true;
-            }
-        }
-    }
-    public void OnRelese()
-    {
-        if (!gameOveryet)
-        { 
-            if (turnTime != 3)
-            {
-                damage = 3 - turnTime;
-                turnTime = 0.0f;
-            }
-        }
-    }
-    #endregion
 
-    //計時器
+    #region 計時相關
     void Timeline()
     {
         turnTime -= Time.deltaTime;
@@ -191,6 +144,16 @@ public class GameCore : MonoBehaviour
             ResultWinOrLose();
         }
     }
+    void ButtonDelay()
+    {
+        waitButton -= Time.deltaTime;
+        if (waitButton <= 0.0f)
+        {
+            waitButton = 1.0f;
+            waitCd = false;
+        }
+    }
+    #endregion
 
     #region 每回合行為
     public void TurnBattle()
@@ -254,6 +217,75 @@ public class GameCore : MonoBehaviour
         enemy.enemyHand.gameObject.SetActive(true);
         myUI.Result.gameObject.SetActive(true);
         #endregion
+    }
+    #endregion
+
+    #region 點擊按鈕
+    public void OnClickRock()
+    {
+        if (!gameOveryet)
+        {
+            if (!turnStart)
+            {
+                if (!waitCd)
+                {
+                    hand = Hand.Rock;
+                    EnemyAiHand();
+                    TurnBattle();
+                    turnStart = true;
+                    waitCd = true;
+                }
+            }
+        }
+    }
+    public void OnClickPaper()
+    {
+        if (!gameOveryet)
+        {
+            if (!turnStart)
+            {
+                if (!waitCd)
+                {
+                    hand = Hand.Paper;
+                    EnemyAiHand();
+                    TurnBattle();
+                    turnStart = true;
+                    waitCd = true;
+                }
+            }
+        }
+    }
+    public void OnClickScissors()
+    {
+        if (!gameOveryet)
+        {
+            if (!turnStart)
+            {
+                if (!waitCd)
+                {
+                    hand = Hand.Scissors;
+                    EnemyAiHand();
+                    TurnBattle();
+                    turnStart = true;
+                    waitCd = true;
+                }
+            }
+        }
+    }
+    public void OnRelese()
+    {
+        if (!gameOveryet)
+        { 
+            if (turnTime != 3)
+            {
+                if (!waitCd)
+                {
+                    damage = 3 - turnTime;
+                    turnTime = 0.0f;
+                    waitCd = true;
+                }
+            }
+        }
     }
     #endregion
 
@@ -323,6 +355,14 @@ public class GameCore : MonoBehaviour
     {
         gameOveryet = true;
         myUI.gameOverPanel.gameObject.SetActive(true);
+        if (EggSystem.instance.egg.eggSpawnValue == EggSystem.instance.egg.eggSpawnMaxValue)
+        {
+            myUI.continue_eggb.gameObject.SetActive(true);
+        }
+        else if(EggSystem.instance.egg.eggSpawnValue < EggSystem.instance.egg.eggSpawnMaxValue)
+        {
+            myUI.continue_eggnotb.gameObject.SetActive(true);
+        }
         #region 重置狀態
         myUI.Result.gameObject.SetActive(false);
         enemy.enemyHand.gameObject.SetActive(false);
@@ -340,6 +380,7 @@ public class GameCore : MonoBehaviour
         }
         myUI.winText.text = myUI.win.ToString();
         myUI.loseText.text = myUI.lose.ToString();
+
     }
     public void OnContinue()
     {
@@ -347,14 +388,19 @@ public class GameCore : MonoBehaviour
         myUI.gameOverPanel.gameObject.SetActive(false);
         player.hp = 100;
         enemy.hp = 100;
+        PlayerPrefs.SetInt("Eggvalue", EggSystem.instance.egg.eggSpawnValue);
+        myUI.continue_eggnotb.gameObject.SetActive(false);
     }
-    public void OnQuit()
+    public void OnContinueBroke()
     {
         gameOveryet = false;
+        myUI.gameOverPanel.gameObject.SetActive(false);
+        player.hp = 100;
+        enemy.hp = 100;
         PlayerPrefs.SetInt("Eggvalue", EggSystem.instance.egg.eggSpawnValue);
-        SceneManager.LoadScene(0);
+        myUI.continue_eggb.gameObject.SetActive(false);
+        SceneManager.LoadScene(1);
     }
     #endregion
-
 }
 
