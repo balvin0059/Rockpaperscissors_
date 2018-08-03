@@ -51,6 +51,7 @@ public class GameCore : MonoBehaviour
         public Image eggbar;
         public Image continue_eggnotb;
         public Image continue_eggb;
+        public GameObject starttext;
     }
     [Serializable]
     public struct Enemystuff
@@ -161,7 +162,9 @@ public class GameCore : MonoBehaviour
         //關閉結果圖案
         myUI.Result.gameObject.SetActive(false);
         //關閉敵人出拳
-        enemy.enemyHand.gameObject.SetActive(false);        
+        enemy.enemyHand.gameObject.SetActive(false);
+        //打開文字
+        myUI.starttext.SetActive(true);
     }
     void GetDamage(Result res)
     {
@@ -214,6 +217,7 @@ public class GameCore : MonoBehaviour
         player.damageBarPaper.fillAmount = 1;
         player.damageBarScissors.fillAmount = 1;
         turnStart = false;
+        myUI.starttext.SetActive(false);
         enemy.enemyHand.gameObject.SetActive(true);
         myUI.Result.gameObject.SetActive(true);
         #endregion

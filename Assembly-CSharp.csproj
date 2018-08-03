@@ -52,8 +52,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Script\AutoSui.cs" />
+     <Compile Include="Assets\Script\Dictionary.cs" />
      <Compile Include="Assets\Script\EggSystem.cs" />
      <Compile Include="Assets\Script\GameCore.cs" />
+     <Compile Include="Assets\Script\GameDictionary.cs" />
      <Compile Include="Assets\Script\StartMenu.cs" />
      <None Include="Assets\fonts\arlishugbmd_test\Readme.txt" />
      <None Include="Assets\fonts\artianniugbbd_test\Readme.txt" />

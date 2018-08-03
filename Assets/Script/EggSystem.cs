@@ -27,6 +27,7 @@ public class EggSystem : MonoBehaviour {
         public GameObject bgShine;
         public GameObject barholder;
         public Image again;
+        public GameObject dic;
     }
     [Serializable]
     public struct Effectstuff
@@ -80,6 +81,14 @@ public class EggSystem : MonoBehaviour {
         egg.again.gameObject.SetActive(false);
         PlayerPrefs.SetInt("Eggvalue", EggSystem.instance.egg.eggSpawnValue);
         SceneManager.LoadScene(0);
+    }
+    public void OnDic()
+    {
+        eggIncubation = false;
+        egg.barholder.SetActive(true);
+        egg.again.gameObject.SetActive(false);
+        PlayerPrefs.SetInt("Eggvalue", EggSystem.instance.egg.eggSpawnValue);
+        SceneManager.LoadScene(3);
     }
     #endregion
 
